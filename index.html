@@ -1,0 +1,1814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Cycura — Know your rhythm. Own your magic.</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap');
+
+:root{
+    --bg:#17151c;
+    --panel:#211e29;
+    --panel2:#292433;
+    --lav:#b9a7d9;
+    --lav2:#d8ccef;
+    --sage:#9eb8a7;
+    --text:#f4f0f8;
+    --muted:#aaa2b5;
+    --border:rgba(255,255,255,.10);
+    --accent:#c7b5e8;
+    --danger:#d59cae;
+    --shadow:0 20px 60px rgba(0,0,0,.28);
+}
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    background:
+        radial-gradient(circle at 10% 10%,rgba(185,167,217,.12),transparent 25%),
+        radial-gradient(circle at 90% 20%,rgba(158,184,167,.08),transparent 25%),
+        var(--bg);
+    color:var(--text);
+    font-family:"DM Sans",sans-serif;
+    min-height:100vh;
+}
+
+button,input,select,textarea{
+    font:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+.app{
+    display:flex;
+    min-height:100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+    width:245px;
+    padding:28px 18px;
+    border-right:1px solid var(--border);
+    background:rgba(20,18,25,.86);
+    backdrop-filter:blur(18px);
+    position:fixed;
+    left:0;
+    top:0;
+    bottom:0;
+    z-index:20;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:8px 10px 28px;
+}
+
+.logo-symbol{
+    width:43px;
+    height:43px;
+    border-radius:50%;
+    background:linear-gradient(135deg,var(--lav),var(--sage));
+    color:#17151c;
+    display:grid;
+    place-items:center;
+    font-size:21px;
+    box-shadow:0 0 25px rgba(185,167,217,.22);
+}
+
+.logo h1{
+    font-family:"Playfair Display",serif;
+    font-size:25px;
+}
+
+.logo span{
+    display:block;
+    color:var(--muted);
+    font-size:9px;
+    letter-spacing:1.5px;
+    margin-top:2px;
+}
+
+.nav{
+    display:flex;
+    flex-direction:column;
+    gap:7px;
+}
+
+.nav button{
+    border:0;
+    background:transparent;
+    color:var(--muted);
+    padding:13px 14px;
+    border-radius:14px;
+    text-align:left;
+    transition:.2s;
+}
+
+.nav button:hover,
+.nav button.active{
+    background:rgba(185,167,217,.12);
+    color:var(--text);
+}
+
+.nav button span{
+    margin-right:10px;
+}
+
+.sidebar-bottom{
+    position:absolute;
+    bottom:25px;
+    left:25px;
+    right:25px;
+    color:var(--muted);
+    font-size:11px;
+    line-height:1.6;
+}
+
+/* MAIN */
+
+.main{
+    margin-left:245px;
+    width:calc(100% - 245px);
+    padding:35px;
+    max-width:1500px;
+}
+
+.page{
+    display:none;
+    animation:fade .25s ease;
+}
+
+.page.active{
+    display:block;
+}
+
+@keyframes fade{
+    from{opacity:0;transform:translateY(5px)}
+    to{opacity:1;transform:none}
+}
+
+.top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    margin-bottom:25px;
+}
+
+.eyebrow{
+    color:var(--sage);
+    text-transform:uppercase;
+    letter-spacing:2px;
+    font-size:11px;
+    font-weight:700;
+    margin-bottom:8px;
+}
+
+h2{
+    font-family:"Playfair Display",serif;
+    font-size:35px;
+    margin-bottom:7px;
+}
+
+.subtitle{
+    color:var(--muted);
+    max-width:650px;
+    line-height:1.6;
+}
+
+.date-pill{
+    border:1px solid var(--border);
+    background:var(--panel);
+    padding:10px 15px;
+    border-radius:20px;
+    color:var(--muted);
+    font-size:12px;
+}
+
+/* CARDS */
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(12,1fr);
+    gap:18px;
+}
+
+.card{
+    background:linear-gradient(145deg,rgba(41,36,51,.95),rgba(30,27,37,.96));
+    border:1px solid var(--border);
+    border-radius:22px;
+    padding:22px;
+    box-shadow:var(--shadow);
+}
+
+.card h3{
+    font-family:"Playfair Display",serif;
+    font-size:20px;
+    margin-bottom:8px;
+}
+
+.card p{
+    color:var(--muted);
+    line-height:1.55;
+    font-size:14px;
+}
+
+.span-4{grid-column:span 4}
+.span-5{grid-column:span 5}
+.span-6{grid-column:span 6}
+.span-7{grid-column:span 7}
+.span-8{grid-column:span 8}
+.span-12{grid-column:span 12}
+
+/* BOARD */
+
+.board-card{
+    min-height:310px;
+}
+
+.calendar{
+    display:grid;
+    grid-template-columns:repeat(7,1fr);
+    gap:7px;
+    margin-top:18px;
+}
+
+.calendar div{
+    min-height:40px;
+    display:grid;
+    place-items:center;
+    color:var(--muted);
+    font-size:12px;
+    border-radius:10px;
+}
+
+.calendar .day-name{
+    color:var(--lav);
+    font-weight:700;
+    min-height:25px;
+}
+
+.calendar .today{
+    border:1px solid var(--lav);
+    color:white;
+}
+
+.calendar .period{
+    background:rgba(213,156,174,.20);
+    color:#f0c8d3;
+    border:1px solid rgba(213,156,174,.5);
+    border-radius:50%;
+}
+
+.calendar .empty{
+    opacity:0;
+}
+
+.schedule{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    margin-top:15px;
+}
+
+.schedule-item{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    background:rgba(255,255,255,.035);
+    padding:12px;
+    border-radius:13px;
+}
+
+.time{
+    color:var(--lav);
+    font-size:12px;
+    width:70px;
+}
+
+.event-title{
+    font-weight:600;
+    font-size:13px;
+}
+
+.event-sub{
+    color:var(--muted);
+    font-size:11px;
+    margin-top:2px;
+}
+
+.dot{
+    width:9px;
+    height:9px;
+    border-radius:50%;
+    background:var(--sage);
+}
+
+/* BUTTONS */
+
+.btn{
+    border:0;
+    background:linear-gradient(135deg,var(--lav),#9d8bc4);
+    color:#1a1720;
+    padding:11px 16px;
+    border-radius:12px;
+    font-weight:700;
+    transition:.2s;
+}
+
+.btn:hover{
+    transform:translateY(-1px);
+    filter:brightness(1.07);
+}
+
+.btn.secondary{
+    background:rgba(255,255,255,.06);
+    color:var(--text);
+    border:1px solid var(--border);
+}
+
+.btn.small{
+    padding:8px 12px;
+    font-size:12px;
+}
+
+input,select,textarea{
+    width:100%;
+    background:#17151c;
+    border:1px solid var(--border);
+    color:var(--text);
+    padding:12px 13px;
+    border-radius:12px;
+    outline:none;
+    margin-top:7px;
+}
+
+textarea{
+    resize:vertical;
+    min-height:100px;
+}
+
+input:focus,select:focus,textarea:focus{
+    border-color:var(--lav);
+}
+
+label{
+    color:var(--muted);
+    font-size:12px;
+}
+
+.form-row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+.actions{
+    display:flex;
+    gap:9px;
+    flex-wrap:wrap;
+    margin-top:14px;
+}
+
+.result{
+    margin-top:15px;
+    padding:15px;
+    border-radius:14px;
+    background:rgba(158,184,167,.09);
+    border:1px solid rgba(158,184,167,.18);
+    line-height:1.6;
+    color:#ddd7e3;
+    font-size:13px;
+}
+
+/* DISCOVERY */
+
+.discovery{
+    background:
+      radial-gradient(circle at 90% 20%,rgba(185,167,217,.20),transparent 35%),
+      linear-gradient(135deg,#292335,#222a28);
+}
+
+.activity{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:14px;
+    background:rgba(255,255,255,.035);
+    border-radius:15px;
+    margin-top:12px;
+}
+
+.activity-icon{
+    font-size:27px;
+}
+
+.activity h4{
+    font-size:14px;
+    margin-bottom:3px;
+}
+
+.activity p{
+    font-size:12px;
+}
+
+/* COMPANION */
+
+.companion-preview{
+    min-height:270px;
+    display:grid;
+    place-items:center;
+    background:
+      radial-gradient(circle at 50% 35%,rgba(185,167,217,.20),transparent 30%),
+      #1b1821;
+    border-radius:20px;
+    border:1px solid var(--border);
+}
+
+.animal{
+    text-align:center;
+}
+
+.animal-face{
+    font-size:105px;
+    filter:drop-shadow(0 15px 20px rgba(0,0,0,.3));
+}
+
+.animal-name{
+    font-family:"Playfair Display",serif;
+    font-size:24px;
+    margin-top:5px;
+}
+
+.mood{
+    color:var(--sage);
+    font-size:12px;
+    margin-top:5px;
+}
+
+/* PRIVACY */
+
+.privacy-list{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    margin-top:15px;
+}
+
+.privacy-row{
+    display:flex;
+    justify-content:space-between;
+    gap:20px;
+    padding:15px;
+    border:1px solid var(--border);
+    border-radius:15px;
+    background:rgba(255,255,255,.025);
+}
+
+.privacy-row strong{
+    font-size:13px;
+}
+
+.privacy-row p{
+    margin-top:3px;
+    font-size:11px;
+}
+
+/* CHAT */
+
+.chat{
+    height:390px;
+    overflow-y:auto;
+    background:#18161e;
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:17px;
+}
+
+.message{
+    max-width:80%;
+    padding:12px 14px;
+    border-radius:16px;
+    margin-bottom:12px;
+    font-size:13px;
+    line-height:1.5;
+}
+
+.message.bot{
+    background:#282331;
+    color:#e9e2ed;
+}
+
+.message.user{
+    background:#9e8ac2;
+    color:#18151d;
+    margin-left:auto;
+}
+
+.chat-input{
+    display:flex;
+    gap:9px;
+    margin-top:10px;
+}
+
+.chat-input input{
+    margin:0;
+}
+
+/* TOAST */
+
+.toast{
+    position:fixed;
+    bottom:25px;
+    right:25px;
+    background:#eee8f5;
+    color:#1c1820;
+    padding:13px 17px;
+    border-radius:13px;
+    font-size:12px;
+    font-weight:700;
+    transform:translateY(100px);
+    opacity:0;
+    transition:.3s;
+    z-index:100;
+}
+
+.toast.show{
+    transform:none;
+    opacity:1;
+}
+
+/* MOBILE */
+
+@media(max-width:850px){
+    .sidebar{
+        width:100%;
+        height:auto;
+        bottom:auto;
+        position:relative;
+        padding:10px;
+    }
+
+    .app{
+        display:block;
+    }
+
+    .logo{
+        padding:8px;
+    }
+
+    .nav{
+        flex-direction:row;
+        overflow-x:auto;
+    }
+
+    .nav button{
+        white-space:nowrap;
+    }
+
+    .sidebar-bottom{
+        display:none;
+    }
+
+    .main{
+        margin:0;
+        width:100%;
+        padding:20px;
+    }
+
+    .grid{
+        grid-template-columns:1fr;
+    }
+
+    .span-4,.span-5,.span-6,.span-7,.span-8,.span-12{
+        grid-column:span 1;
+    }
+
+    .top{
+        gap:15px;
+        flex-direction:column;
+    }
+
+    .form-row{
+        grid-template-columns:1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<aside class="sidebar">
+
+    <div class="logo">
+        <div class="logo-symbol">☾</div>
+        <div>
+            <h1>Cycura</h1>
+            <span>KNOW YOUR RHYTHM · OWN YOUR MAGIC</span>
+        </div>
+    </div>
+
+    <nav class="nav">
+        <button class="active" onclick="showPage('board',this)">
+            <span>📌</span> BOARD
+        </button>
+
+        <button onclick="showPage('cycle',this)">
+            <span>🌙</span> CYCLE
+        </button>
+
+        <button onclick="showPage('companion',this)">
+            <span>🐾</span> COMPANION
+        </button>
+
+        <button onclick="showPage('chat',this)">
+            <span>💬</span> CHAT
+        </button>
+
+        <button onclick="showPage('privacy',this)">
+            <span>🔐</span> PRIVACY
+        </button>
+    </nav>
+
+    <div class="sidebar-bottom">
+        Cycura is a student-built prototype.<br>
+        Your local demo data stays in this browser.
+    </div>
+
+</aside>
+
+
+<main class="main">
+
+<!-- ================= BOARD ================= -->
+
+<section id="board" class="page active">
+
+    <div class="top">
+        <div>
+            <div class="eyebrow">Your little corner of the universe</div>
+            <h2>Welcome back, starling ✦</h2>
+            <p class="subtitle">
+                Your cycle, plans and little discoveries — connected through one calm board.
+            </p>
+        </div>
+
+        <div class="date-pill" id="currentDate"></div>
+    </div>
+
+    <div class="grid">
+
+        <div class="card span-7 board-card">
+            <h3>📌 Your Board</h3>
+            <p>A gentle view of your month.</p>
+
+            <div class="calendar" id="calendar"></div>
+        </div>
+
+
+        <div class="card span-5">
+            <h3>⏳ Today's rhythm</h3>
+            <p>Your timetable and free windows.</p>
+
+            <div id="schedule" class="schedule"></div>
+
+            <div class="actions">
+                <button class="btn small" onclick="addEvent()">+ Add event</button>
+                <button class="btn secondary small" onclick="detectFreeTime()">Find free time</button>
+            </div>
+
+            <div id="freeResult"></div>
+        </div>
+
+
+        <div class="card span-7 discovery">
+
+            <div class="eyebrow">DISCOVERY</div>
+
+            <h3>Something for your free moment ✨</h3>
+
+            <p>
+                Cycura connects your available time with things you actually enjoy.
+                Nothing is compulsory.
+            </p>
+
+            <div id="activities"></div>
+
+            <div class="actions">
+                <button class="btn" onclick="newActivity()">Discover something</button>
+            </div>
+
+        </div>
+
+
+        <div class="card span-5">
+
+            <h3>🐾 Your companion</h3>
+
+            <p id="companionText">
+                A tiny companion who adapts to your world — never judges it.
+            </p>
+
+            <div class="actions">
+                <button class="btn" onclick="showPage('companion',document.querySelectorAll('.nav button')[2])">
+                    Visit companion
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= CYCLE ================= -->
+
+<section id="cycle" class="page">
+
+    <div class="top">
+        <div>
+            <div class="eyebrow">HEALTH · PATTERNS · AWARENESS</div>
+            <h2>Your Cycle</h2>
+            <p class="subtitle">
+                Track patterns without treating estimates as certainty.
+            </p>
+        </div>
+    </div>
+
+
+    <div class="grid">
+
+        <div class="card span-6">
+
+            <h3>🩸 Cycle prediction</h3>
+
+            <p>
+                Add at least two recent period start dates. Cycura estimates
+                a possible future window using the average interval.
+            </p>
+
+            <label>Period start dates</label>
+
+            <textarea id="periodDates"
+            placeholder="Example:
+2026-08-18
+2026-07-21
+2026-06-23"></textarea>
+
+            <div class="actions">
+                <button class="btn" onclick="predictCycle()">Estimate next window</button>
+            </div>
+
+            <div id="cycleResult"></div>
+
+        </div>
+
+
+        <div class="card span-6">
+
+            <h3>🔎 Pattern view</h3>
+
+            <p>
+                Cycura can describe recorded cycle variability without
+                diagnosing a medical condition.
+            </p>
+
+            <div id="patternResult" class="result">
+                Add your dates to see a simple pattern summary.
+            </div>
+
+        </div>
+
+
+        <div class="card span-12">
+
+            <h3>🌙 Cycle phases</h3>
+
+            <div class="grid" style="margin-top:15px">
+
+                <div class="card span-3">
+                    <h3>🩸 Menstrual</h3>
+                    <p>
+                        The period phase. Energy and experiences vary from person to person.
+                    </p>
+                </div>
+
+                <div class="card span-3">
+                    <h3>🌱 Follicular</h3>
+                    <p>
+                        A phase after the period where hormone patterns change as the body prepares for ovulation.
+                    </p>
+                </div>
+
+                <div class="card span-3">
+                    <h3>🌕 Ovulatory</h3>
+                    <p>
+                        Ovulation is the release of an egg. Timing can vary considerably.
+                    </p>
+                </div>
+
+                <div class="card span-3">
+                    <h3>🍂 Luteal</h3>
+                    <p>
+                        The phase after ovulation and before the next period.
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= COMPANION ================= -->
+
+<section id="companion" class="page">
+
+    <div class="top">
+        <div>
+            <div class="eyebrow">YOUR LITTLE SIDEKICK</div>
+            <h2>Meet your companion 🐾</h2>
+            <p class="subtitle">
+                You choose the world. Your companion grows into it.
+            </p>
+        </div>
+    </div>
+
+
+    <div class="grid">
+
+        <div class="card span-6">
+
+            <h3>✨ Create your companion</h3>
+
+            <div style="margin-top:18px">
+
+                <label>Animal</label>
+
+                <select id="animal">
+                    <option value="🦊">Fox</option>
+                    <option value="🐈">Cat</option>
+                    <option value="🐇">Rabbit</option>
+                    <option value="🦉">Owl</option>
+                    <option value="🐻">Bear</option>
+                    <option value="🦋">Butterfly</option>
+                </select>
+
+            </div>
+
+
+            <div style="margin-top:14px">
+
+                <label>Personality</label>
+
+                <select id="personality">
+                    <option>Gentle</option>
+                    <option>Curious</option>
+                    <option>Playful</option>
+                    <option>Quiet</option>
+                    <option>Adventurous</option>
+                </select>
+
+            </div>
+
+
+            <div style="margin-top:14px">
+
+                <label>Favourite colour</label>
+
+                <input type="text" id="companionColor"
+                placeholder="lavender, blue, sage...">
+
+            </div>
+
+
+            <div style="margin-top:14px">
+
+                <label>Companion name</label>
+
+                <input type="text" id="companionName"
+                placeholder="Give them a name">
+
+            </div>
+
+
+            <div class="actions">
+                <button class="btn" onclick="createCompanion()">
+                    Create companion
+                </button>
+            </div>
+
+        </div>
+
+
+        <div class="card span-6">
+
+            <div class="companion-preview">
+
+                <div class="animal">
+
+                    <div id="animalFace" class="animal-face">🦊</div>
+
+                    <div id="animalName" class="animal-name">
+                        Your companion
+                    </div>
+
+                    <div id="animalMood" class="mood">
+                        Ready to explore your little universe ✦
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= CHAT ================= -->
+
+<section id="chat" class="page">
+
+    <div class="top">
+        <div>
+            <div class="eyebrow">EDUCATION · NOT DIAGNOSIS</div>
+            <h2>Ask Cycura 💬</h2>
+            <p class="subtitle">
+                Ask general reproductive-health questions and get simple educational information.
+            </p>
+        </div>
+    </div>
+
+
+    <div class="card">
+
+        <div class="chat" id="chatBox">
+
+            <div class="message bot">
+                Hi ✦ I'm Cycura's educational health assistant.
+                Ask me something about periods, cycles, ovulation or cycle tracking.
+                I provide general information — not a diagnosis.
+            </div>
+
+        </div>
+
+
+        <div class="chat-input">
+
+            <input id="chatInput"
+            placeholder="Ask something like 'What is ovulation?'"
+            onkeydown="if(event.key==='Enter')sendMessage()">
+
+            <button class="btn" onclick="sendMessage()">
+                Send
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= PRIVACY ================= -->
+
+<section id="privacy" class="page">
+
+    <div class="top">
+        <div>
+            <div class="eyebrow">PRIVACY FIRST</div>
+            <h2>Your data belongs to you 🔐</h2>
+            <p class="subtitle">
+                Cycura is designed around data minimisation and user control.
+            </p>
+        </div>
+    </div>
+
+
+    <div class="grid">
+
+        <div class="card span-7">
+
+            <h3>Privacy centre</h3>
+
+            <div class="privacy-list">
+
+                <div class="privacy-row">
+                    <div>
+                        <strong>🛡 Data minimisation</strong>
+                        <p>Only information needed for a feature should be processed.</p>
+                    </div>
+                    <strong>ON</strong>
+                </div>
+
+                <div class="privacy-row">
+                    <div>
+                        <strong>🧹 Direct identifiers</strong>
+                        <p>Name, email, phone and address are not required by this prototype.</p>
+                    </div>
+                    <strong>BLOCKED</strong>
+                </div>
+
+                <div class="privacy-row">
+                    <div>
+                        <strong>💾 Local demo storage</strong>
+                        <p>Prototype preferences are stored in this browser using localStorage.</p>
+                    </div>
+                    <strong>ON</strong>
+                </div>
+
+                <div class="privacy-row">
+                    <div>
+                        <strong>🧠 Preference learning</strong>
+                        <p>Users should be able to view, edit and reset preference information.</p>
+                    </div>
+                    <button class="btn secondary small" onclick="resetPreferences()">
+                        Reset
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="card span-5">
+
+            <h3>Why did Cycura suggest this?</h3>
+
+            <p>
+                The real Cycura architecture includes an explainability layer
+                so users can understand why an estimate or recommendation was generated.
+            </p>
+
+            <div class="result">
+                <strong>Example:</strong><br><br>
+                “This activity appeared because you selected art as an interest
+                and your timetable showed a free 30-minute window.”
+            </div>
+
+        </div>
+
+
+        <div class="card span-12">
+
+            <h3>⚠️ Prototype notice</h3>
+
+            <p>
+                Cycura is a student project prototype. Cycle estimates are approximate
+                and health information is educational. A production health application
+                would require medical review, security testing, privacy compliance,
+                validated models and professional oversight.
+            </p>
+
+            <div class="actions">
+                <button class="btn secondary" onclick="clearAllData()">
+                    Clear local demo data
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+</main>
+
+</div>
+
+
+<div id="toast" class="toast"></div>
+
+
+<script>
+
+/* ==========================================
+   CYCURA CORE
+   ========================================== */
+
+const $ = id => document.getElementById(id);
+
+let events = JSON.parse(localStorage.getItem("cycura_events") || "null") || [
+    {
+        time:"08:00",
+        title:"School",
+        sub:"Classes"
+    },
+    {
+        time:"15:30",
+        title:"Study",
+        sub:"Chemistry · 60 min"
+    },
+    {
+        time:"18:00",
+        title:"Free window",
+        sub:"Discover something"
+    }
+];
+
+
+let activities = [
+    ["🎨","Tiny art session","Sketch something using only three shapes."],
+    ["🎧","Music moment","Make a 15-minute playlist for your current mood."],
+    ["📖","Read & wander","Read a few pages of something you genuinely enjoy."],
+    ["🌙","Quiet reset","Put your phone away for ten minutes and reset."],
+    ["✍️","Journal prompt","Write three things you noticed today."],
+    ["🧠","Learn something random","Pick one topic and explore it for 20 minutes."]
+];
+
+
+/* ==========================================
+   NAVIGATION
+   ========================================== */
+
+function showPage(page,button){
+
+    document.querySelectorAll(".page").forEach(p=>{
+        p.classList.remove("active");
+    });
+
+    $(page).classList.add("active");
+
+    document.querySelectorAll(".nav button").forEach(b=>{
+        b.classList.remove("active");
+    });
+
+    if(button){
+        button.classList.add("active");
+    }
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+}
+
+
+/* ==========================================
+   DATE
+   ========================================== */
+
+function updateDate(){
+
+    const date = new Date();
+
+    $("currentDate").innerText =
+        date.toLocaleDateString("en-IN",{
+            weekday:"short",
+            day:"numeric",
+            month:"short",
+            year:"numeric"
+        });
+}
+
+
+/* ==========================================
+   CALENDAR
+   ========================================== */
+
+function renderCalendar(){
+
+    const container = $("calendar");
+
+    const now = new Date();
+
+    const year = now.getFullYear();
+    const month = now.getMonth();
+
+    const monthName =
+        now.toLocaleString("default",{month:"long"});
+
+    let html = "";
+
+    ["S","M","T","W","T","F","S"].forEach(day=>{
+        html += `<div class="day-name">${day}</div>`;
+    });
+
+    const first = new Date(year,month,1).getDay();
+
+    const days = new Date(year,month+1,0).getDate();
+
+    for(let i=0;i<first;i++){
+        html += `<div class="empty">.</div>`;
+    }
+
+    for(let d=1;d<=days;d++){
+
+        const today =
+            d===now.getDate();
+
+        const period =
+            d===18;
+
+        html += `
+            <div class="${today?"today ":""}${period?"period":""}">
+                ${d}
+            </div>
+        `;
+    }
+
+    container.innerHTML = html;
+
+}
+
+
+/* ==========================================
+   TIMETABLE
+   ========================================== */
+
+function renderSchedule(){
+
+    $("schedule").innerHTML =
+        events.map((event,index)=>`
+
+        <div class="schedule-item">
+
+            <div class="dot"></div>
+
+            <div class="time">
+                ${event.time}
+            </div>
+
+            <div style="flex:1">
+
+                <div class="event-title">
+                    ${escapeHTML(event.title)}
+                </div>
+
+                <div class="event-sub">
+                    ${escapeHTML(event.sub)}
+                </div>
+
+            </div>
+
+            <button
+                class="btn secondary small"
+                onclick="deleteEvent(${index})">
+                ×
+            </button>
+
+        </div>
+
+    `).join("");
+
+}
+
+
+function addEvent(){
+
+    const title =
+        prompt("What do you want to add to your timetable?");
+
+    if(!title) return;
+
+    const time =
+        prompt("What time? Example: 19:00","19:00");
+
+    events.push({
+        time:time || "19:00",
+        title:title,
+        sub:"Personal event"
+    });
+
+    localStorage.setItem(
+        "cycura_events",
+        JSON.stringify(events)
+    );
+
+    renderSchedule();
+
+    toast("Added to your board ✦");
+}
+
+
+function deleteEvent(index){
+
+    events.splice(index,1);
+
+    localStorage.setItem(
+        "cycura_events",
+        JSON.stringify(events)
+    );
+
+    renderSchedule();
+
+    toast("Event removed.");
+}
+
+
+function detectFreeTime(){
+
+    $("freeResult").innerHTML = `
+        <div class="result">
+            ✦ Cycura found a flexible window around <strong>18:00–19:00</strong>.
+            <br><br>
+            You could use it for a small discovery, rest, reading or anything you choose.
+        </div>
+    `;
+}
+
+
+/* ==========================================
+   ACTIVITIES
+   ========================================== */
+
+function newActivity(){
+
+    const random =
+        activities[Math.floor(Math.random()*activities.length)];
+
+    $("activities").innerHTML = `
+
+        <div class="activity">
+
+            <div class="activity-icon">
+                ${random[0]}
+            </div>
+
+            <div>
+                <h4>${random[1]}</h4>
+                <p>${random[2]}</p>
+            </div>
+
+        </div>
+    `;
+
+    localStorage.setItem(
+        "cycura_last_activity",
+        random[1]
+    );
+
+    toast("A new little discovery appeared ✨");
+}
+
+
+/* ==========================================
+   CYCLE ENGINE
+   ========================================== */
+
+function getDates(){
+
+    const raw =
+        $("periodDates").value
+        .split("\n")
+        .map(x=>x.trim())
+        .filter(Boolean);
+
+    const dates =
+        raw.map(x=>new Date(x))
+        .filter(x=>!isNaN(x.getTime()))
+        .sort((a,b)=>a-b);
+
+    return dates;
+}
+
+
+function predictCycle(){
+
+    const dates = getDates();
+
+    if(dates.length < 2){
+
+        $("cycleResult").innerHTML = `
+            <div class="result">
+                Please enter at least <strong>2 valid period start dates</strong>.
+            </div>
+        `;
+
+        return;
+    }
+
+    let lengths = [];
+
+    for(let i=1;i<dates.length;i++){
+
+        const days =
+            Math.round(
+                (dates[i]-dates[i-1]) /
+                (1000*60*60*24)
+            );
+
+        if(days>0 && days<100){
+            lengths.push(days);
+        }
+    }
+
+    if(!lengths.length) return;
+
+    const average =
+        lengths.reduce((a,b)=>a+b,0) /
+        lengths.length;
+
+    const last =
+        dates[dates.length-1];
+
+    const estimate =
+        new Date(last);
+
+    estimate.setDate(
+        estimate.getDate()+Math.round(average)
+    );
+
+    const windowStart =
+        new Date(estimate);
+
+    windowStart.setDate(
+        windowStart.getDate()-2
+    );
+
+    const windowEnd =
+        new Date(estimate);
+
+    windowEnd.setDate(
+        windowEnd.getDate()+2
+    );
+
+    const format =
+        d=>d.toLocaleDateString(
+            "en-IN",
+            {day:"numeric",month:"short",year:"numeric"}
+        );
+
+    const variation =
+        Math.max(...lengths) -
+        Math.min(...lengths);
+
+    $("cycleResult").innerHTML = `
+        <div class="result">
+
+            <strong>Estimated next-period window</strong><br>
+
+            ${format(windowStart)}
+            –
+            ${format(windowEnd)}
+
+            <br><br>
+
+            Average recorded interval:
+            <strong>${average.toFixed(1)} days</strong>
+
+            <br>
+
+            Recorded intervals:
+            ${lengths.join(", ")} days
+
+            <br><br>
+
+            Confidence:
+            <strong>${variation<=4 ? "higher based on this small sample" : "more variable based on this sample"}</strong>
+
+            <br><br>
+
+            <small>
+            This is an estimate based only on the dates entered.
+            It is not a medical prediction or diagnosis.
+            </small>
+
+        </div>
+    `;
+
+
+    $("patternResult").innerHTML = `
+
+        <strong>Pattern summary</strong><br><br>
+
+        Cycura found ${lengths.length} recorded interval(s).
+
+        <br><br>
+
+        Your recorded intervals range from
+        <strong>${Math.min(...lengths)}</strong>
+        to
+        <strong>${Math.max(...lengths)}</strong>
+        days.
+
+        <br><br>
+
+        Difference between shortest and longest:
+        <strong>${variation} day(s)</strong>.
+
+    `;
+
+}
+
+
+/* ==========================================
+   COMPANION
+   ========================================== */
+
+function createCompanion(){
+
+    const animal =
+        $("animal").value;
+
+    const personality =
+        $("personality").value;
+
+    const color =
+        $("companionColor").value ||
+        "lavender";
+
+    const name =
+        $("companionName").value ||
+        "Lumi";
+
+    $("animalFace").innerText =
+        animal;
+
+    $("animalName").innerText =
+        name;
+
+    $("animalMood").innerText =
+        `${personality} · ${color} · ready for your next little adventure ✦`;
+
+    localStorage.setItem(
+        "cycura_companion",
+        JSON.stringify({
+            animal,
+            personality,
+            color,
+            name
+        })
+    );
+
+    $("companionText").innerText =
+        `${name} is your ${personality.toLowerCase()} companion.`;
+
+    toast(`${name} has joined your world 🐾`);
+}
+
+
+function loadCompanion(){
+
+    const saved =
+        JSON.parse(
+            localStorage.getItem("cycura_companion") || "null"
+        );
+
+    if(!saved) return;
+
+    $("animal").value =
+        saved.animal;
+
+    $("personality").value =
+        saved.personality;
+
+    $("companionColor").value =
+        saved.color;
+
+    $("companionName").value =
+        saved.name;
+
+    $("animalFace").innerText =
+        saved.animal;
+
+    $("animalName").innerText =
+        saved.name;
+
+    $("animalMood").innerText =
+        `${saved.personality} · ${saved.color} · ready for your next little adventure ✦`;
+
+    $("companionText").innerText =
+        `${saved.name} is your ${saved.personality.toLowerCase()} companion.`;
+}
+
+
+/* ==========================================
+   HEALTH CHATBOT
+   ========================================== */
+
+function sendMessage(){
+
+    const input =
+        $("chatInput");
+
+    const question =
+        input.value.trim();
+
+    if(!question) return;
+
+    addChatMessage(
+        question,
+        "user"
+    );
+
+    input.value = "";
+
+    setTimeout(()=>{
+
+        const answer =
+            getHealthAnswer(question);
+
+        addChatMessage(
+            answer,
+            "bot"
+        );
+
+    },350);
+}
+
+
+function addChatMessage(text,type){
+
+    const box =
+        $("chatBox");
+
+    const div =
+        document.createElement("div");
+
+    div.className =
+        `message ${type}`;
+
+    div.innerText =
+        text;
+
+    box.appendChild(div);
+
+    box.scrollTop =
+        box.scrollHeight;
+}
+
+
+function getHealthAnswer(question){
+
+    const q =
+        question.toLowerCase();
+
+    if(q.includes("ovulation")){
+
+        return "Ovulation is when an ovary releases an egg. The timing can vary between people and from cycle to cycle, so calendar estimates should not be treated as certainty.";
+
+    }
+
+    if(q.includes("period") || q.includes("menstrual")){
+
+        return "A period is the bleeding phase of the menstrual cycle. Cycle length and period experiences can vary, especially during the teen years.";
+
+    }
+
+    if(q.includes("cycle")){
+
+        return "A menstrual cycle is counted from the first day of one period to the first day of the next. Cycles do not have to be exactly the same length every month.";
+
+    }
+
+    if(q.includes("irregular")){
+
+        return "Cycle timing can naturally vary. If you are concerned about a change, persistent symptoms, or something that feels unusual for you, consider talking with a parent, guardian, doctor, nurse, or another trusted healthcare professional.";
+
+    }
+
+    if(q.includes("pain") || q.includes("cramp")){
+
+        return "Period cramps are common, but severe or concerning pain should not simply be ignored. If pain is worrying you or interfering with normal activities, a healthcare professional can help you understand what is happening.";
+
+    }
+
+    return "I can explain general topics such as periods, menstrual cycles, ovulation and cycle tracking. I cannot diagnose conditions. For personal medical concerns, a qualified healthcare professional is the right source.";
+
+}
+
+
+/* ==========================================
+   THEME AI DEMO
+   ========================================== */
+
+function themeDemo(){
+
+    const prompt =
+        $("themePrompt").value;
+
+    if(!prompt) return;
+
+    $("themeResult").innerHTML = `
+
+        <div class="result">
+
+            <strong>✨ Cycura design interpretation</strong>
+
+            <br><br>
+
+            Your concept:
+            <em>${escapeHTML(prompt)}</em>
+
+            <br><br>
+
+            <strong>Generated direction</strong><br>
+
+            • Atmosphere: dreamy celestial apothecary<br>
+            • Primary mood: calm + personal<br>
+            • Accent system: dusty lavender + soft sage<br>
+            • Texture: paper, stars and botanical details<br>
+            • Typography: elegant serif + clean sans-serif<br>
+            • Companion elements: subtle and playful<br><br>
+
+            <small>
+            The design assistant is instructed to preserve the user's original
+            elements rather than silently replacing them.
+            </small>
+
+        </div>
+
+    `;
+}
+
+
+/* ==========================================
+   PRIVACY
+   ========================================== */
+
+function resetPreferences(){
+
+    localStorage.removeItem(
+        "cycura_last_activity"
+    );
+
+    toast("Preference learning reset.");
+}
+
+
+function clearAllData(){
+
+    const ok =
+        confirm(
+            "Clear Cycura's local demo data from this browser?"
+        );
+
+    if(!ok) return;
+
+    localStorage.clear();
+
+    location.reload();
+}
+
+
+/* ==========================================
+   UTILITIES
+   ========================================== */
+
+function escapeHTML(text){
+
+    return String(text)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+}
+
+
+function toast(message){
+
+    const t =
+        $("toast");
+
+    t.innerText =
+        message;
+
+    t.classList.add("show");
+
+    setTimeout(()=>{
+        t.classList.remove("show");
+    },2200);
+}
+
+
+/* ==========================================
+   INIT
+   ========================================== */
+
+updateDate();
+
+renderCalendar();
+
+renderSchedule();
+
+newActivity();
+
+loadCompanion();
+
+</script>
+
+</body>
+</html>
